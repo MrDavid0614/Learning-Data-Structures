@@ -9,25 +9,10 @@ class LinkedNode {
 }
 
 class LinkedList {
-   head;
-}
+    head;
 
-class Main {
-    list;
-
-    init(){
-        this.list = new LinkedList();
-
-        this.list.head = new LinkedNode(1);
-        const secondNode = new LinkedNode(2);
-        const thirdNode = new LinkedNode(3);
-        
-        this.list.head.next = secondNode;
-        secondNode.next = thirdNode;
-    }
-
-    printList(head){
-        let node = head;
+    printList(){
+       let node = this.head;
 
         while(node !== undefined){
             console.log(node.data);
@@ -36,7 +21,20 @@ class Main {
     }
 }
 
-const main = new Main();
+class Main {
+    
+    static init(){
+        const list = new LinkedList();
 
-main.init();
-main.printList(main.list.head);
+        list.head = new LinkedNode(1);
+        const secondNode = new LinkedNode(2);
+        const thirdNode = new LinkedNode(3);
+        
+        list.head.next = secondNode;
+        secondNode.next = thirdNode;
+
+        list.printList();
+    }
+}
+
+Main.init();
