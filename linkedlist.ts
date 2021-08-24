@@ -19,7 +19,6 @@ class LinkedList{
     const newLinkedNode = new LinkedNode(data);
     newLinkedNode.next = this.head;
     this.head = newLinkedNode;
-    this.imprimir()
   }
 
   // Add the element to the final of the list
@@ -38,7 +37,6 @@ class LinkedList{
      }
 
      currentLinkedNode.next = newLinkedNode;
-     this.imprimir()
   }
 
   insertAtIndex(index: number, data: any){
@@ -140,24 +138,31 @@ class LinkedList{
   }
 
   // OPCIONAL!!
-  invert() {
-    //   invert the order of elements in the list
-    const linkedList = new LinkedList();
-    let currentLinkedNode = this.head;
-    while(currentLinkedNode !== null){
-      linkedList.unshift(currentLinkedNode.data);
-      currentLinkedNode = currentLinkedNode.next;
+  reverse(head: LinkedNode) {
+    //   reverse the order of elements in the list
+    let previousNode: LinkedNode | null = head;
+    let currentNode = head.next;
+    previousNode.next = null;
+
+    while(currentNode !== null) {
+        const nextNode = currentNode.next;
+
+        currentNode.next = previousNode;
+        previousNode = currentNode;
+        currentNode = nextNode;
     }
-    this.head = linkedList.head;
+    
+    this.head = previousNode;
+    return previousNode;
   }
 
   findLoop(){
 
   }
 
-  imprimir(){
+  imprimir(head: LinkedNode){
     let str = "";
-    let currentLinkedNode = this.head;
+    let currentLinkedNode = head;
 
     while(currentLinkedNode.next != null){
       str += `${currentLinkedNode.data} => `;
@@ -176,6 +181,8 @@ linkedList.unshift("La mamá")
 linkedList.unshift("La mamá de")
 linkedList.unshift("Adios")
 linkedList.unshift("odias")
-linkedList.unshift("Hola")
-console.log(linkedList.removeAtIndex(2));
-linkedList.imprimir();
+linkedList.unshift("Hola");
+linkedList.reverse(linkedList.head);
+linkedList.imprimir(linkedList.head);
+linkedList.reverse(linkedList.head);
+linkedList.imprimir(linkedList.head);
