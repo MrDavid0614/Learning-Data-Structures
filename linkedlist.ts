@@ -157,7 +157,24 @@ class LinkedList{
   }
 
   findLoop(){
+    let tortoise: LinkedNode | null | undefined = this.head;
+    let hare: LinkedNode | null | undefined = this.head;
 
+    do {
+      if(hare === null) {
+        return false;
+      }
+      
+      if(!hare?.next){
+        return false;
+      }
+
+      tortoise = tortoise?.next;
+      hare = hare?.next?.next;
+    }
+    while(tortoise !== hare)
+
+    return true;
   }
 
   imprimir(head: LinkedNode){
@@ -182,7 +199,5 @@ linkedList.unshift("La mamá de")
 linkedList.unshift("Adios")
 linkedList.unshift("odias")
 linkedList.unshift("Hola");
-linkedList.reverse(linkedList.head);
-linkedList.imprimir(linkedList.head);
-linkedList.reverse(linkedList.head);
+console.log(`Is there a loop in the list? ${ linkedList.findLoop() }`);
 linkedList.imprimir(linkedList.head);
