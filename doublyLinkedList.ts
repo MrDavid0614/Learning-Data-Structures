@@ -2,66 +2,90 @@ class LinkedNode {
     public previous: LinkedNode | null;
     public next: LinkedNode | null;
 
-    constructor(public value: any) {
+    constructor(public data: any) {
         this.previous = null;
         this.next = null;
     }
 }
 
 class DoublyLinkedList {
-    private nodes: LinkedNode[];
+    head: LinkedNode | null;
+    tail: LinkedNode | null;
 
     constructor() {
-        this.nodes = [];
+        this.head = null;
+        this.tail = this.head;
     }
 
-    get head(): LinkedNode {
-        return this.nodes[0] || null;
+    unshift(data: any): LinkedNode {
+        const newNode = new LinkedNode(data);
+
+        if(this.head === null) {
+            this.head = newNode;
+            this.tail = this.head;
+            return this.head;
+        }
+
+        newNode.next = this.head;
+        this.head.previous = newNode;
+        this.head = newNode;
+
+        return this.head;
     }
 
-    get tail(): LinkedNode {
-        return this.nodes[ this.size - 1 ] || null;
+    push(data: any): LinkedNode {
+        const newNode = new LinkedNode(data);
+
+        if(this.head === null) {
+            this.head = newNode;
+            this.tail = newNode;
+            return this.head;
+        }
+        
+        this.tail.next = newNode;
+        newNode.previous = this.tail;
+        this.tail = newNode;
+
+        return this.tail;
     }
 
-    get size(): number {
-        return this.nodes.length;
+    find(data: any): LinkedNode | null {
+        let currentNode = this.head;
+
+        while(currentNode?.data !== data && currentNode !== null) {
+            currentNode = currentNode.next;
+        }
+
+        if(currentNode === null) {
+            console.error("No se encontró el nodo.")
+            return currentNode;
+        }
+
+        return currentNode;
     }
 
-    insertAt(index: number, value: any): void {
-        const newNode = new LinkedNode(value);
-        const previousNode = this.nodes[ index - 1 ] || null ;
-        const nextNode = this.nodes[ index + 1 ] || null;
+    remove(data: any): LinkedNode | null {
+        let node = this.find(data);
 
-        if(previousNode !== null) previousNode.next = newNode || null;
+        let previousNode = node?.previous;
+        let nextNode = node?.next;
 
-        newNode.previous = previousNode;
-        newNode.next = nextNode;
+        previousNode?.next = nextNode;
+        nextNode?.previous = previousNode;
 
-        this.nodes.splice(index, 0, newNode);
+        return node;
+    }
+
+    insertAt(index: number, data: any): void {
+
     }
 
     removeAt(index: number): LinkedNode {
-        const previousNode = this.nodes[ index - 1 ] || null;
-        const nextNode = this.nodes[ index + 1 ] || null;
-        const deletedNode = this.nodes[ index ];
 
-        previousNode.next = nextNode;
-        nextNode.previous = previousNode;
-        this.nodes.splice(index, 1);
-        return deletedNode;
-    }
-
-    clear(): void {
-        this.nodes = [];
     }
 
     getAt(index: number): LinkedNode | null {
-        if(index >= this.size) {
-            console.error('Este índice no existe.');
-            return null;
-        }
-
-        return this.nodes[index];
+        
     }
 
     reverse(): void {
@@ -72,19 +96,16 @@ class DoublyLinkedList {
             currentNode.previous = tmp.next;
             currentNode.next = tmp.previous;
 
-            this.nodes.push(currentNode);
             currentNode = tmp.previous;
         }
-
-        this.nodes.splice(0, this.size / 2);
     }
 
     getAll(): void {
-        let str = "";
+        let str: string = "";
         let currentNode: LinkedNode | null = this.head;
 
         while(currentNode !== null) {
-            str+= `${ currentNode.value } => `;
+            str+= `${ currentNode.data } => `;
             currentNode = currentNode.next;
         }
         
@@ -96,9 +117,11 @@ class DoublyLinkedList {
 
 const list = new DoublyLinkedList();
 
-list.insertAt(0, 5);
-list.insertAt(1, 6);
-list.insertAt(2, 7);
-list.getAll();
-list.reverse();
+// list.insertAt(0, 5);
+// list.insertAt(1, 6);
+// list.insertAt(2, 7);
+list.unshift(1);
+list.unshift(0);
+list.push(2);
+list.remove(2);
 list.getAll();
